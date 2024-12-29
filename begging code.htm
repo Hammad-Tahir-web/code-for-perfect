@@ -1,0 +1,170 @@
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="manifest" href="/site.webmanifest">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simple Car Game</title>
+        <style>
+            .language {
+                background: #ff00006b;
+                color: aliceblue;
+            }
+            p1 {
+                background-color: antiquewhite;
+                color: black;
+                width: auto;
+                position: top;
+            }
+            textarea {
+                color: rgb(0, 0, 0);
+                border: #1575cf79 2px;
+                background-color: aqua;
+            }
+            * {
+                box-sizing: border-box;
+        }
+        h1 {
+            background: #2d07b6a1;
+            color: aliceblue;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+			padding: 0;
+            overflow: hidden;
+            background-color: #c1f5035e;
+        }
+        
+        #gameArea {
+            position: relative;
+            width: 400px;
+            height: 550px;
+            background-color: #b6c53271;
+            overflow: hidden;
+            border: 2px solid #adcf15;
+        }
+
+        .car {
+            position: absolute;
+            bottom: 10px;
+            left: 135px;
+            width: 15px;
+            height: 25px;
+            background-color: rgb(255, 0, 0);
+        }
+
+        .obstacle {
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background-color: rgba(255, 255, 255, 0.479);
+        }
+        span {
+            background: #ff0000;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ol>
+            <li>game</li>
+            <li><a href="/about.html"><span>about</span></a></li>
+        </ol>
+    </nav>
+    <hr>
+    <h1>_____Block Game</h1>
+    <br>
+    <div id="gameArea">
+        <div class="car" id="car"></div>
+    </div>
+
+    <script>
+        const gameArea = document.getElementById('gameArea');
+        const car = document.getElementById('car');
+        let carPosition = 400;
+        let gameOver = false;
+
+        // Function to move the car
+        function moveCar(event) {
+            if (gameOver) return;
+            if (event.key === 'ArrowLeft' && carPosition > 0) {
+                carPosition -= 20;
+            } else if (event.key === 'ArrowRight' && carPosition < 370) {
+                carPosition += 20;
+            }
+            car.style.left = carPosition + 'px';
+        }
+
+        // Function to create obstacles
+        function createObstacle() {
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('obstacle');
+            obstacle.style.left = Math.floor(Math.random() * 500) + 'px';
+            obstacle.style.top = '-50px';
+            gameArea.appendChild(obstacle);
+            moveObstacle(obstacle);
+        }
+
+        // Function to move obstacles
+        function moveObstacle(obstacle) {
+            let obstacleInterval = setInterval(() => {
+                if (gameOver) {
+                    clearInterval(obstacleInterval);
+                    return;
+                }
+
+                const obstacleTop = parseInt(obstacle.style.top);
+                obstacle.style.top = (obstacleTop + 20) + 'px';
+
+                if (obstacleTop > 1000) {
+                    obstacle.remove();
+                    clearInterval(obstacleInterval);
+                }
+
+                // Collision detection
+                const carRect = car.getBoundingClientRect();
+                const obstacleRect = obstacle.getBoundingClientRect();
+
+                if (
+                    carRect.left < obstacleRect.left + obstacleRect.width &&
+                    carRect.left + carRect.width > obstacleRect.left &&
+                    carRect.top < obstacleRect.top + obstacleRect.height &&
+                    carRect.height + carRect.top > obstacleRect.top
+                ) {
+                    gameOver = true;
+                    alert("Game Over!");
+                }
+            }, 20);
+        }
+
+        // Spawn obstacles every 1 seconds
+        setInterval(() => {
+            if (!gameOver) createObstacle();
+        }, 1000);
+
+        // Event listener for car movement
+        window.addEventListener('keydown', moveCar);
+    </script>
+    <div class="yt-spec-touch-feedback-shape__fill" style ></div>
+    <div>
+    <p1>please describe your opinion to hammad </p1>
+    <br>
+    <textarea cols="40" rows="10" placeholder="enter plaes code for hammad"></textarea>
+    <select name="langusge" id="language">
+    <option value="js">js</option>
+    <option value="py">html</option>
+    <option value="css">css</option>
+    <input type=radio class="python" >c1
+</div>
+</body>
+</html>
